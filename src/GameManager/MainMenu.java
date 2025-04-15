@@ -18,6 +18,7 @@ public class MainMenu extends JFrame implements ActionListener {
     ImageIcon icon = new ImageIcon("Textures/nutria_icon.png");
     private Player player;
 
+
     public MainMenu(Player player) {
         this.player = player;
 

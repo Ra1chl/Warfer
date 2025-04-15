@@ -9,49 +9,84 @@ import java.awt.event.ActionListener;
 
 public class Game extends JFrame implements ActionListener {
 
-    JFrame menuFrame = new JFrame();
-    JPanel menuPanel = new JPanel(null); // null layout přímo zde
-    JLabel title = new JLabel();
-    private JLabel background;
+    private JPanel mainPanel;
+    private CardLayout cardLayout;
     ImageIcon icon = new ImageIcon("Textures/nutria_icon.png");
     private Player player;
 
-    public Game(Player player) {
+    JButton caveButton = new JButton();
+    private JLabel background;
+
+    Game(Player player){
         this.player = player;
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(false);
+        this.setIconImage(icon.getImage());
+        this.setLocationRelativeTo(null);
 
-        // Titulek hry
-        title.setText("NUTRIA WARFARE");
-        title.setHorizontalAlignment(SwingConstants.CENTER);
-        title.setBounds(340, 100, 600, 80); // Uprostřed
-        title.setFont(new Font("Arial", Font.BOLD, 48));
-        title.setForeground(Color.WHITE);
+        cardLayout = new CardLayout();
+        mainPanel = new JPanel(cardLayout);
+        mainPanel.setPreferredSize(new Dimension(1280, 720));
 
-        // Panel
-        menuPanel.setBounds(0, 0, 1280, 720);
-        menuPanel.add(title);
+        this.addFrames();
+        this.add(mainPanel, BorderLayout.CENTER);
+        this.pack(); // nastaví velikost na základě preferovaných rozměrů
+        this.setVisible(true);
+    }
 
 
-        // Pozadí (MUSÍ BÝT PŘED FRAME SETVISIBLE)
+    private void addFrames(){
+        mainPanel.add(createGameFrame(),"hub");
+        mainPanel.add(createCaveFrame(), "cave");
+    }
+
+    private JPanel createGameFrame() {
+        JPanel hubPanel = new JPanel();
+        hubPanel.setLayout(null);
+
+        caveButton.setBounds(60, 470, 180, 180);
+        caveButton.addActionListener(this);
+        caveButton.setFocusable(false);
+        caveButton.setOpaque(false);
+        caveButton.setContentAreaFilled(false);
+        caveButton.setBorderPainted(false);
+        caveButton.setFocusPainted(false);
+        hubPanel.add(caveButton);
+
         ImageIcon backgroundImage = new ImageIcon("Textures/game_bg.png");
         background = new JLabel(backgroundImage);
         background.setBounds(0, 0, 1280, 720);
-        menuPanel.add(background);
-        menuPanel.setComponentZOrder(background, menuPanel.getComponentCount() - 1); // Pošle pozadí dozadu
+        hubPanel.add(background);
+        hubPanel.setComponentZOrder(background, hubPanel.getComponentCount() - 1);
 
-        // Frame
-        menuFrame.setTitle("Nutria Warfare");
-        menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        menuFrame.setResizable(false);
-        menuFrame.setSize(1280, 720);
-        menuFrame.setLocationRelativeTo(null); // vycentrovat na obrazovce
-        menuFrame.setIconImage(icon.getImage());
-        menuFrame.add(menuPanel);
-        menuFrame.setVisible(true);
+        return hubPanel;
     }
+
+    private JPanel createCaveFrame(){
+        JPanel cavePanel = new JPanel();
+        cavePanel.setLayout(null);
+
+        JButton attackButton = new JButton();
+
+        attackButton.setBounds(60, 470, 180, 180);
+        caveButton.setFocusable(false);
+
+        ImageIcon backgroundImage = new ImageIcon("Textures/cave_bg.png");
+        background = new JLabel(backgroundImage);
+        background.setBounds(0, 0, 1280, 720);
+        cavePanel.add(background);
+        cavePanel.setComponentZOrder(background, cavePanel.getComponentCount() - 1);
+
+        return cavePanel;
+    }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+if (e.getSource() == caveButton) {
+    System.out.println("caveButton");
+    cardLayout.show(mainPanel, "cave");
+}
     }
 }
 
