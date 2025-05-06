@@ -6,16 +6,15 @@ public class Enemy {
     private int health;
     private int attackPower;
     private int reward;
-    private int difficulty;
+
     private String obrazek;
 
-    public Enemy(String type, int health, int attackPower, int reward, int difficulty,String obrazek) {
+    public Enemy(String type, int health, int attackPower, int reward, String obrazek) {
         this.type = type;
         this.health = health;
         this.maxHealth = health;
         this.attackPower = attackPower;
         this.reward = reward;
-        this.difficulty = difficulty;
         this.obrazek = obrazek;
     }
 
@@ -48,7 +47,5 @@ public class Enemy {
         return reward;
     }
 
-    public int getDifficulty() {
-        return difficulty;
-    }
+
 }

@@ -15,22 +15,33 @@ public class Game extends JFrame implements ActionListener {
     private Player player;
     private ImageIcon icon = new ImageIcon("Textures/icon.jpg");
     private JButton caveButton = new JButton();
+    private JButton upgradeButton = new JButton();
     private JLabel background;
 
     private ArrayList<Enemy> enemyList = new ArrayList<>();
-    private MainNutria nutria;
+    private MainNutria nutria;  // Nutria inicializována v konstruktoru
     private CombatManager combat;
     private JLabel nutriaHealthLabel;
     private JLabel enemyHealthLabel;
     private JButton attackButton;
     private JTextArea combatLog;
 
-    public Game(Player player){
+    private JLabel enemyImageLabel;
+
+    private JButton exitButton;
+
+    // Přidáme labely pro max health a max attack (pro upgrade)
+    private int upgradeCostWood = 5;
+    private int upgradeCostChestnut = 5;
+
+    public Game(Player player) {
         this.player = player;
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setIconImage(icon.getImage());
-        this.setLocationRelativeTo(null);
+
+        // Inicializace hlavní nutrie se základními hodnotami, aby nebyla null
+        this.nutria = new MainNutria(100, 10);
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
@@ -46,6 +57,7 @@ public class Game extends JFrame implements ActionListener {
     private void addFrames() {
         mainPanel.add(createGameFrame(), "hub");
         mainPanel.add(createCaveFrame(), "cave");
+        mainPanel.add(createUpgradeFrame(), "upgrade");
     }
 
     private JPanel createGameFrame() {
@@ -60,6 +72,15 @@ public class Game extends JFrame implements ActionListener {
         caveButton.setFocusPainted(false);
         hubPanel.add(caveButton);
 
+        upgradeButton.setBounds(900, 275, 200, 180);
+        upgradeButton.addActionListener(this);
+        upgradeButton.setFocusable(false);
+        upgradeButton.setOpaque(false);
+        upgradeButton.setContentAreaFilled(false);
+        upgradeButton.setBorderPainted(false);
+        upgradeButton.setFocusPainted(false);
+        hubPanel.add(upgradeButton);
+
         ImageIcon backgroundImage = new ImageIcon("Textures/game_bg.png");
         background = new JLabel(backgroundImage);
         background.setBounds(0, 0, 1280, 720);
@@ -70,6 +91,81 @@ public class Game extends JFrame implements ActionListener {
         hubPanel.repaint();
 
         return hubPanel;
+    }
+
+    private JPanel createUpgradeFrame() {
+        JPanel upgradePanel = new JPanel(null);
+
+        ImageIcon backgroundImage = new ImageIcon("Textures/base_bg.png");
+        background = new JLabel(backgroundImage);
+        background.setBounds(0, 0, 1280, 720);
+        upgradePanel.add(background);
+
+        // Štítky pro zobrazení aktuálních hodnot maxHealth a maxAttack
+        JLabel currentMaxHealthLabel = new JLabel("" + nutria.getMaxHealth());
+        currentMaxHealthLabel.setBounds(630, 652, 250, 30);
+        currentMaxHealthLabel.setFont(new Font("Arial", Font.BOLD, 24)); // Zvětšení textu
+        upgradePanel.add(currentMaxHealthLabel);
+
+        JLabel currentMaxAttackLabel = new JLabel("" + nutria.getMaxAttackPower());
+        currentMaxAttackLabel.setBounds(630, 612, 250, 30);
+        currentMaxAttackLabel.setFont(new Font("Arial", Font.BOLD, 24)); // Změňte velikost podle potřeby // Zvětšení textu
+        upgradePanel.add(currentMaxAttackLabel);
+
+        // Štítky pro zobrazení surovin
+        JLabel woodLabel = new JLabel("Dřevo: " + nutria.getResourceAmount(ResourceType.WOOD));
+        woodLabel.setBounds(100, 200, 250, 30);
+        upgradePanel.add(woodLabel);
+
+        JLabel chestnutLabel = new JLabel("Kaštany: " + nutria.getResourceAmount(ResourceType.NUT));
+        chestnutLabel.setBounds(100, 250, 250, 30);
+        upgradePanel.add(chestnutLabel);
+
+        // Tlačítko pro upgrade max zdraví
+        JButton upgradeHealthButton = new JButton("UPGRADE");
+        upgradeHealthButton.setBounds(740, 460, 270, 50);
+        upgradeHealthButton.addActionListener(e -> {
+            if (nutria.getResourceAmount(ResourceType.WOOD) >= upgradeCostWood && nutria.getResourceAmount(ResourceType.NUT) >= upgradeCostChestnut) {
+                nutria.removeResource(ResourceType.WOOD, upgradeCostWood);
+                nutria.removeResource(ResourceType.NUT, upgradeCostChestnut);
+                nutria.increaseMaxHealth(10); // Zvýšení max health o 10
+                currentMaxHealthLabel.setText("" + nutria.getMaxHealth());
+               // woodLabel.setText("Dřevo: " + nutria.getResourceAmount(ResourceType.WOOD));
+                //chestnutLabel.setText("Kaštany: " + nutria.getResourceAmount(ResourceType.NUT));
+                upgradeCostWood += 2;
+                upgradeCostChestnut += 2;
+            } else {
+                JOptionPane.showMessageDialog(upgradePanel, "Nemáte dostatek surovin!");
+            }
+        });
+        upgradePanel.add(upgradeHealthButton);
+
+        // Tlačítko pro upgrade max útoku
+        JButton upgradeAttackButton = new JButton("UPGRADE");
+        upgradeAttackButton.setBounds(285, 460, 270, 50);
+        upgradeAttackButton.addActionListener(e -> {
+            if (nutria.getResourceAmount(ResourceType.WOOD) >= upgradeCostWood && nutria.getResourceAmount(ResourceType.NUT) >= upgradeCostChestnut) {
+                nutria.removeResource(ResourceType.WOOD, upgradeCostWood);
+                nutria.removeResource(ResourceType.NUT, upgradeCostChestnut);
+                nutria.increaseMaxAttackPower(5); // Zvýšení max útoku o 5
+                currentMaxAttackLabel.setText("" + nutria.getMaxAttackPower());
+                upgradeCostWood += 2;
+                upgradeCostChestnut += 2;
+            } else {
+                JOptionPane.showMessageDialog(upgradePanel, "Nemáte dostatek surovin!");
+            }
+        });
+        upgradePanel.add(upgradeAttackButton);
+
+        exitButton = new JButton("Back");
+        exitButton.setBounds(20, 625, 200, 50);
+        exitButton.setFocusable(false);
+        exitButton.addActionListener(this);
+        upgradePanel.add(exitButton);
+
+        upgradePanel.setComponentZOrder(background, upgradePanel.getComponentCount() - 1);
+
+        return upgradePanel;
     }
 
     private JPanel createCaveFrame() {
@@ -97,6 +193,10 @@ public class Game extends JFrame implements ActionListener {
         JScrollPane scrollPane = new JScrollPane(combatLog);
         scrollPane.setBounds(410, 0, 400, 200);
         cavePanel.add(scrollPane);
+
+        enemyImageLabel = new JLabel();
+        enemyImageLabel.setBounds(890, 300, 300, 300);
+        cavePanel.add(enemyImageLabel);
 
         attackButton.addActionListener(e -> {
             if (combat.isBattleOver()) {
@@ -145,21 +245,17 @@ public class Game extends JFrame implements ActionListener {
         return cavePanel;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == caveButton) {
-            resetCombat();
-            cardLayout.show(mainPanel, "cave");
-        }
-    }
-
     private void resetCombat() {
-        nutria = new MainNutria(100, 10);
+        // Místo vytváření nové instance, resetujeme pouze zdraví a útok
+        nutria.setHealth(nutria.getMaxHealth()); // Obnovíme zdraví na maximum
+        nutria.setAttackPower(nutria.getMaxAttackPower()); // Obnovíme útok na maximum
 
         enemyList.clear();
-        enemyList.add(new Enemy("Ptacek", 30, 8, 1, 1,"bird.png"));
-        enemyList.add(new Enemy("Krab", 40, 10, 2, 1,"crab.png"));
-        enemyList.add(new Enemy("Medved", 50, 5, 3, 2,"bear.png"));
+        enemyList.add(new Enemy("Ptacek", 30, 8, 1, "bird.png"));
+        enemyList.add(new Enemy("Krab", 40, 10, 2, "crab.png"));
+        enemyList.add(new Enemy("Medved", 50, 5, 3, "bear.png"));
+        enemyList.add(new Enemy("bee", 60, 9, 3, "bee.png"));
+        enemyList.add(new Enemy("Duck", 60, 10, 3, "duck.png"));
 
         combat = new CombatManager(nutria, enemyList);
 
@@ -170,6 +266,37 @@ public class Game extends JFrame implements ActionListener {
 
     private void updateHealthLabels() {
         nutriaHealthLabel.setText("Nutria HP: " + nutria.getHealth());
-        enemyHealthLabel.setText(combat.getCurrentEnemy().getType() + " HP: " + combat.getCurrentEnemy().getHealth());
+        Enemy currentEnemy = combat.getCurrentEnemy();
+        enemyHealthLabel.setText(currentEnemy.getType() + " HP: " + currentEnemy.getHealth());
+
+        // Přidání odměny po poražení nepřítele
+        if (currentEnemy.getHealth() <= 0) {
+            nutria.addResource(ResourceType.NUT, currentEnemy.getReward());
+            nutria.addResource(ResourceType.WOOD, currentEnemy.getReward());
+            combatLog.append("Nutria získala " + currentEnemy.getReward() + " odměnu za poražení " + currentEnemy.getType() + "!\n");
+
+            // Aktualizace zobrazení surovin
+            combatLog.append("Kaštany: " + nutria.getResourceAmount(ResourceType.NUT));
+        }
+
+        ImageIcon icon = new ImageIcon("Textures/" + currentEnemy.getObrazek());
+        Image scaledImage = icon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
+        enemyImageLabel.setIcon(new ImageIcon(scaledImage));
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == caveButton) {
+            resetCombat();
+            cardLayout.show(mainPanel, "cave");
+        }
+        if (e.getSource() == upgradeButton) {
+            cardLayout.show(mainPanel, "upgrade");
+        }
+
+
+        if (e.getSource() == exitButton) {
+            cardLayout.show(mainPanel, "hub");
+        }
     }
 }

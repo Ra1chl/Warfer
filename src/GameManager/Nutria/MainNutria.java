@@ -1,18 +1,84 @@
 package GameManager.Nutria;
 
+import GameManager.Inventory;
+import GameManager.ResourceType;
+
 public class MainNutria {
-    private int health;            // Kolik toho vydrží
-    private int attackPower;       // Kolik dá poškození
-    private int level;             // Level nutrie
-    private int experience;        // XP pro levelování
+    private int health;
+    private int maxHealth;         // Nové pole pro maximální životy
+    private int attackPower;
+    private int maxAttackPower;    // Nové pole pro maximální útok
+    private int level;
+    private Inventory inventory;    // Přidání inventáře
 
-    public MainNutria(int health, int attackPower) {
-        this.health = health;
-        this.attackPower = attackPower;
+    public MainNutria(int maxHealth, int maxAttackPower) {
+        this.maxHealth = maxHealth;
+        this.health = maxHealth; // aktuální zdraví je na max
+        this.maxAttackPower = maxAttackPower;
+        this.attackPower = maxAttackPower; // aktuální útok je na max
         this.level = 1;
-        this.experience = 0;
-
+        this.inventory = new Inventory(); // Inicializace inventáře
     }
+
+    // Metody pro manipulaci se surovinami
+    public void addResource(ResourceType type, int amount) {
+        inventory.addResource(type, amount);
+    }
+
+    public boolean removeResource(ResourceType type, int amount) {
+        return inventory.removeResource(type, amount);
+    }
+
+    public int getResourceAmount(ResourceType type) {
+        return inventory.getAmount(type);
+    }
+
+    // Nové metody pro získání max hodnot
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public int getMaxAttackPower() {
+        return maxAttackPower;
+    }
+
+    // Metody pro zvýšení max hodnot (pro upgrade)
+    public void increaseMaxHealth(int amount) {
+        this.maxHealth += amount;
+        this.health = this.maxHealth; // při upgrade se obnoví na max životy
+    }
+
+    public void increaseMaxAttackPower(int amount) {
+        this.maxAttackPower += amount;
+        this.attackPower = this.maxAttackPower; // při upgrade se obnoví na max útok
+    }
+
+    // Metody pro aktuální životy a útok
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        if (health > maxHealth) {
+            this.health = maxHealth;
+        } else {
+            this.health = health;
+        }
+    }
+
+    public int getAttackPower() {
+        return attackPower;
+    }
+
+    public void setAttackPower(int attackPower) {
+        if (attackPower > maxAttackPower) {
+            this.attackPower = maxAttackPower;
+        } else {
+            this.attackPower = attackPower;
+        }
+    }
+
+    // Zbytek metod zůstává stejný (např. attack, receiveDamage, isAlive, atd.)
 
     public void attack(Enemy enemy) {
         enemy.takeDamage(attackPower);
@@ -25,20 +91,7 @@ public class MainNutria {
     }
 
     public void gainExperience(int xp) {
-        experience += xp;
-        System.out.println("Main Nutria gained " + xp + " XP.");
-        checkLevelUp();
-    }
-
-    private void checkLevelUp() {
-        int xpToLevel = 100 * level;
-        if (experience >= xpToLevel) {
-            experience -= xpToLevel;
-            level++;
-            health += 10;
-            attackPower += 5;
-            System.out.println("Main Nutria leveled up to level " + level + "!");
-        }
+        // pokud nechcete XP, můžete tento kód odstranit nebo ignorovat
     }
 
     public void takeDamage(int amount) {
@@ -51,19 +104,11 @@ public class MainNutria {
         return health > 0;
     }
 
-    public int getHealth() {
-        return health;
-    }
-
-    public int getAttackPower() {
-        return attackPower;
-    }
-
     public int getLevel() {
         return level;
     }
 
     public int getExperience() {
-        return experience;
+        return 0; // XP ignorujeme
     }
 }
