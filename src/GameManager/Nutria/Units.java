@@ -19,6 +19,7 @@ public abstract class Units {
         System.out.println(this.getClass().getSimpleName() + " leveled up to level " + level);
     }
 
+
     // Getter pro základní atributy
     public int getAttackPower() {
         return attackPower;

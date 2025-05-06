@@ -15,7 +15,7 @@ public class MainMenu extends JFrame implements ActionListener {
     JButton startButton = new JButton();
     JButton exitButton = new JButton();
     private JLabel background;
-    ImageIcon icon = new ImageIcon("Textures/nutria_icon.png");
+    ImageIcon icon = new ImageIcon("Textures/icon.jpg");
     private Player player;
 
 

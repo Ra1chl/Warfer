@@ -15,7 +15,7 @@ public class MainNutria {
     }
 
     public void attack(Enemy enemy) {
-        enemy.receiveDamage(attackPower);
+        enemy.takeDamage(attackPower);
         System.out.println("Main Nutria attacks for " + attackPower + " damage!");
     }
 
@@ -39,6 +39,12 @@ public class MainNutria {
             attackPower += 5;
             System.out.println("Main Nutria leveled up to level " + level + "!");
         }
+    }
+
+    public void takeDamage(int amount) {
+        health -= amount;
+        if (health < 0) health = 0;
+        System.out.println("Unit took " + amount + " damage. Health now: " + health);
     }
 
     public boolean isAlive() {
