@@ -13,10 +13,13 @@ public class Game extends JFrame implements ActionListener {
     private JPanel mainPanel;
     private CardLayout cardLayout;
     private Player player;
+    private UnitsManager unitsManager;
+
     private ImageIcon icon = new ImageIcon("Textures/icon.jpg");
     private JButton caveButton = new JButton();
     private JButton upgradeButton = new JButton();
     private JButton forestButton = new JButton();
+    private JButton trainingButton = new JButton();
 
     private JLabel background;
 
@@ -47,6 +50,7 @@ public class Game extends JFrame implements ActionListener {
 
         // Inicializace hlavní nutrie se základními hodnotami, aby nebyla null
         this.nutria = new MainNutria(100, 10);
+        this.unitsManager = new UnitsManager(nutria);
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
@@ -64,6 +68,7 @@ public class Game extends JFrame implements ActionListener {
         mainPanel.add(createCaveFrame(), "cave");
         mainPanel.add(createUpgradeFrame(), "upgrade");
         mainPanel.add(createForestFrame(), "forest");
+        mainPanel.add(createTrainingFrame(), "training");
     }
 
     private JPanel createGameFrame() {
@@ -95,6 +100,15 @@ public class Game extends JFrame implements ActionListener {
         forestButton.setBorderPainted(false);
         forestButton.setFocusPainted(false);
         hubPanel.add(forestButton);
+
+        trainingButton.setBounds(500, 100, 200, 180);
+        trainingButton.addActionListener(this);
+        trainingButton.setFocusable(false);
+        //  trainingButton.setOpaque(false);
+        //trainingButton.setContentAreaFilled(false);
+        //trainingButton.setBorderPainted(false);
+        trainingButton.setFocusPainted(false);
+        hubPanel.add(trainingButton);
 
         // Štítky pro zobrazení surovin
         woodLabel = new JLabel("Dřevo: " + nutria.getResourceAmount(ResourceType.WOOD));
@@ -229,6 +243,45 @@ public class Game extends JFrame implements ActionListener {
         return forestPanel;
     }
 
+    private JPanel createTrainingFrame() {
+        JPanel trainingPanel = new JPanel(null);
+
+        ImageIcon backgroundImage = new ImageIcon("Textures/upgrade_bg.png");
+        background = new JLabel(backgroundImage);
+        background.setBounds(0, 0, 1280, 720);
+        trainingPanel.add(background);
+        trainingPanel.setComponentZOrder(background, trainingPanel.getComponentCount() - 1);
+
+        JButton buyMeleeButton = new JButton("Koupit Melee Unit (20 Kaštanů)");
+        buyMeleeButton.setBounds(50, 100, 300, 50);
+        buyMeleeButton.addActionListener(e -> {
+            if (unitsManager.buyMeleeUnit()) {
+                JOptionPane.showMessageDialog(this, "Melee jednotka koupena! +5 útoku");
+                updateResourceLabels();
+            } else {
+                JOptionPane.showMessageDialog(this, "Nemáte dostatek Kaštanů!");
+            }
+        });
+        trainingPanel.add(buyMeleeButton);
+
+        JButton buyTankButton = new JButton("Koupit Tank Unit (20 Kaštanů)");
+        buyTankButton.setBounds(50, 170, 300, 50);
+        buyTankButton.addActionListener(e -> {
+            if (unitsManager.buyTankUnit()) {
+                JOptionPane.showMessageDialog(this, "Tank jednotka koupena! +5 zdraví");
+                updateResourceLabels();
+            } else {
+                JOptionPane.showMessageDialog(this, "Nemáte dostatek Kaštanů!");
+            }
+        });
+        trainingPanel.add(buyTankButton);
+        JButton backButton = new JButton("Zpět");
+        backButton.setBounds(20, 625, 200, 50);
+        backButton.addActionListener(e -> cardLayout.show(mainPanel, "hub"));
+        trainingPanel.add(backButton);
+
+        return trainingPanel;
+    }
 
     private JPanel createCaveFrame() {
         JPanel cavePanel = new JPanel(null);
@@ -313,11 +366,13 @@ public class Game extends JFrame implements ActionListener {
         nutria.setAttackPower(nutria.getMaxAttackPower()); // Obnovíme útok na maximum
 
         enemyList.clear();
-        enemyList.add(new Enemy("Ptacek", 30, 8, 1, "bird.png"));
-        enemyList.add(new Enemy("Krab", 40, 10, 2, "crab.png"));
-        enemyList.add(new Enemy("Medved", 50, 5, 3, "bear.png"));
-        enemyList.add(new Enemy("bee", 60, 9, 3, "bee.png"));
-        enemyList.add(new Enemy("Duck", 60, 10, 3, "duck.png"));
+        enemyList.add(new Enemy("Ptacek", 15, 5, 1, "bird.png"));
+        enemyList.add(new Enemy("Vcela", 30, 10, 2, "bee.png"));
+        enemyList.add(new Enemy("Krab", 50, 15, 3, "crab.png"));
+        enemyList.add(new Enemy("Krecek", 65, 20, 4, "hamster.png"));
+        enemyList.add(new Enemy("Duck", 80, 25, 7, "duck.png"));
+        enemyList.add(new Enemy("Medved", 110, 30, 10, "bear.png"));
+        enemyList.add(new Enemy("Crocodile", 200, 40, 20, "croco.png"));
 
         combat = new CombatManager(nutria, enemyList);
 
@@ -339,11 +394,7 @@ public class Game extends JFrame implements ActionListener {
         // Přidání odměny po poražení nepřítele
         if (currentEnemy.getHealth() <= 0) {
             nutria.addResource(ResourceType.NUT, currentEnemy.getReward());
-            nutria.addResource(ResourceType.WOOD, currentEnemy.getReward());
-            combatLog.append("Nutria získala " + currentEnemy.getReward() + " odměnu za poražení " + currentEnemy.getType() + "!\n");
             updateResourceLabels();
-            // Aktualizace zobrazení surovin
-            combatLog.append("Kaštany: " + nutria.getResourceAmount(ResourceType.NUT));
         }
 
         ImageIcon icon = new ImageIcon("Textures/" + currentEnemy.getObrazek());
@@ -363,6 +414,8 @@ public class Game extends JFrame implements ActionListener {
         if (e.getSource() == forestButton) {
             cardLayout.show(mainPanel, "forest");
         }
-
+        if (e.getSource()== trainingButton){
+            cardLayout.show(mainPanel, "training");
+        }
     }
 }

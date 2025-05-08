@@ -69,4 +69,28 @@ public class CombatManager {
     public Enemy getCurrentEnemy() {
         return currentEnemy;
     }
+
+    public void setPlayerUnit(MainNutria playerUnit) {
+        this.playerUnit = playerUnit;
+    }
+
+    public ArrayList<Enemy> getEnemyList() {
+        return enemyList;
+    }
+
+    public void setEnemyList(ArrayList<Enemy> enemyList) {
+        this.enemyList = enemyList;
+    }
+
+    public int getCurrentEnemyIndex() {
+        return currentEnemyIndex;
+    }
+
+    public void setCurrentEnemyIndex(int currentEnemyIndex) {
+        this.currentEnemyIndex = currentEnemyIndex;
+    }
+
+    public void setCurrentEnemy(Enemy currentEnemy) {
+        this.currentEnemy = currentEnemy;
+    }
 }

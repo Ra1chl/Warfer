@@ -47,5 +47,31 @@ public class Enemy {
         return reward;
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
 
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public void setAttackPower(int attackPower) {
+        this.attackPower = attackPower;
+    }
+
+    public void setReward(int reward) {
+        this.reward = reward;
+    }
+
+    public void setObrazek(String obrazek) {
+        this.obrazek = obrazek;
+    }
 }

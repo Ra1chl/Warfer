@@ -9,7 +9,7 @@ public class MainNutria {
     private int attackPower;
     private int maxAttackPower;    // Nové pole pro maximální útok
     private int level;
-    private Inventory inventory;    // Přidání inventáře
+    private Inventory inventory;// Přidání inventáře
 
     public MainNutria(int maxHealth, int maxAttackPower) {
         this.maxHealth = maxHealth;
@@ -110,5 +110,25 @@ public class MainNutria {
 
     public int getExperience() {
         return 0; // XP ignorujeme
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
+    public void setMaxAttackPower(int maxAttackPower) {
+        this.maxAttackPower = maxAttackPower;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 }
