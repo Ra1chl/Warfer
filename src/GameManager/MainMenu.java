@@ -78,7 +78,7 @@ public class MainMenu extends JFrame implements ActionListener {
         if (e.getSource() == startButton) {
             menuFrame.dispose();
             System.out.println("Game starting...");
-            new Game(player);
+            new Game();
         }
         if (e.getSource() == exitButton) {
             menuFrame.dispose();

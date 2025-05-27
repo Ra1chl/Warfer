@@ -21,8 +21,7 @@ public class UpgradeManager {
     }
 
     public boolean upgradeHealth() {
-        if (nutria.getResourceAmount(ResourceType.WOOD) >= upgradeCostWood &&
-                nutria.getResourceAmount(ResourceType.NUT) >= upgradeCostChestnut) {
+        if (nutria.getResourceAmount(ResourceType.WOOD) >= upgradeCostWood && nutria.getResourceAmount(ResourceType.NUT) >= upgradeCostChestnut) {
             nutria.removeResource(ResourceType.WOOD, upgradeCostWood);
             nutria.removeResource(ResourceType.NUT, upgradeCostChestnut);
             nutria.increaseMaxHealth(10);

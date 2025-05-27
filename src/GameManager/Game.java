@@ -12,7 +12,6 @@ public class Game extends JFrame implements ActionListener {
 
     private JPanel mainPanel;
     private CardLayout cardLayout;
-    private Player player;
     private ImageIcon icon = new ImageIcon("Textures/icon.jpg");
 
     private UnitsManager unitsManager;
@@ -45,8 +44,7 @@ public class Game extends JFrame implements ActionListener {
 
     private boolean win = false;
 
-    public Game(Player player) {
-        this.player = player;
+    public Game() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setIconImage(icon.getImage());
@@ -393,7 +391,7 @@ public class Game extends JFrame implements ActionListener {
         enemyImageLabelBoss = new JLabel();
         enemyImageLabelBoss.setBounds(890, 300, 300, 300);
         bossPanel.add(enemyImageLabelBoss);
-        ;
+
 
         attackButtonBoss.addActionListener(e -> {
             if (combat.isBattleOver()) {
@@ -417,8 +415,10 @@ public class Game extends JFrame implements ActionListener {
                     System.out.println("lose");
                 } else {
                     combatLogBoss.append("Vyhrál jsi s bossem!\n");
-                    dispose();
-                    new WinScene();
+
+                    new WinScene(nutria);
+                    cardLayout.show(mainPanel, "hub");
+                    this.win=false;
                     System.out.println("win");
                 }
             }
