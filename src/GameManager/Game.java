@@ -43,14 +43,19 @@ public class Game extends JFrame implements ActionListener {
     private JLabel enemyImageLabelBoss;
 
     private boolean win = false;
-
+    /**
+     * Constructor for the main game class.
+     * Initializes the main window and sets up the core game logic.
+     */
     public Game() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setIconImage(icon.getImage());
 
-        // Inicializace hlavní nutrie se základními hodnotami, aby nebyla null
+        // Initialize the player's main unit (Nutria)
         this.nutria = new MainNutria(100, 1000);
+
+        // Managers for units and upgrades
         this.unitsManager = new UnitsManager(nutria);
         this.upgradeManager = new UpgradeManager(nutria);
 
@@ -64,8 +69,11 @@ public class Game extends JFrame implements ActionListener {
         this.pack();
         this.setVisible(true);
     }
-
+    /**
+     * Sets up the CardLayout that allows switching between different screens.
+     */
     private void addFrames() {
+        // Create different screens of the game
         mainPanel.add(createGameFrame(), "hub");
         mainPanel.add(createCaveFrame(), "cave");
         mainPanel.add(createUpgradeFrame(), "upgrade");
@@ -74,6 +82,9 @@ public class Game extends JFrame implements ActionListener {
         mainPanel.add(createBossFrame(), "boss");
     }
 
+    /**
+     * Creates the central hub screen with buttons to access other parts of the game.
+     */
     private JPanel createGameFrame() {
         JPanel hubPanel = new JPanel(null);
 
@@ -144,7 +155,9 @@ public class Game extends JFrame implements ActionListener {
 
         return hubPanel;
     }
-
+    /**
+     * Creates the shop screen where the player can buy upgrades.
+     */
     private JPanel createUpgradeFrame() {
         JPanel upgradePanel = new JPanel(null);
 
@@ -245,7 +258,9 @@ public class Game extends JFrame implements ActionListener {
 
         return forestPanel;
     }
-
+    /**
+     * Creates the shop screen where the player can buy units.
+     */
     private JPanel createTrainingFrame() {
         JPanel trainingPanel = new JPanel(null);
 
@@ -288,6 +303,15 @@ public class Game extends JFrame implements ActionListener {
         return trainingPanel;
     }
 
+    /**
+     * Creates the cave battle screen.
+     *
+     * This panel contains health labels, an attack button, a combat log, and an enemy image.
+     * It also handles the combat logic including player and enemy actions.
+     * When the battle is over, it either transitions back to the hub or loads the next enemy.
+     *
+     * @return JPanel representing the cave battle scene.
+     */
     private JPanel createCaveFrame() {
         JPanel cavePanel = new JPanel(null);
 
@@ -366,6 +390,14 @@ public class Game extends JFrame implements ActionListener {
         return cavePanel;
     }
 
+    /**
+     * Creates the boss battle screen.
+     *
+     * This panel is similar to the cave battle screen, but used for the final boss fight.
+     * It displays health, handles the boss fight sequence, and shows a win scene if the player defeats the boss.
+     *
+     * @return JPanel representing the boss battle scene.
+     */
     private JPanel createBossFrame() {
         JPanel bossPanel = new JPanel(null);
 
@@ -436,6 +468,13 @@ public class Game extends JFrame implements ActionListener {
         return bossPanel;
     }
 
+    /**
+     * Resets the standard combat scenario.
+     *
+     * Restores the nutria's health and attack power to maximum.
+     * Initializes the list of enemies for the cave fight.
+     * Clears the combat log and updates health labels.
+     */
     private void resetCombat() {
         nutria.setHealth(nutria.getMaxHealth()); // Obnovíme zdraví na maximum
         nutria.setAttackPower(nutria.getMaxAttackPower()); // Obnovíme útok na maximum
@@ -456,6 +495,13 @@ public class Game extends JFrame implements ActionListener {
         updateHealthLabels();
     }
 
+    /**
+     * Resets the boss combat scenario.
+     *
+     * Restores the nutria's health and attack power to maximum.
+     * Initializes the boss enemy only.
+     * Clears the combat log and updates boss health labels.
+     */
     private void resetBossCombat() {
         nutria.setHealth(nutria.getMaxHealth());
         nutria.setAttackPower(nutria.getMaxAttackPower());
@@ -465,13 +511,22 @@ public class Game extends JFrame implements ActionListener {
         combatLog.setText("");
         updateHealthLabelsBoss();
     }
-
+    /**
+     * Updates the labels displaying the player's collected resources.
+     *
+     * Specifically updates the amount of wood and chestnuts.
+     */
     private void updateResourceLabels() {
         woodLabel.setText("Dřevo: " + nutria.getResourceAmount(ResourceType.WOOD));
         chestnutLabel.setText("Kaštany: " + nutria.getResourceAmount(ResourceType.NUT));
     }
 
-
+    /**
+     * Updates the health labels for both the nutria and the current enemy during standard combat.
+     *
+     * Also checks if the enemy has been defeated and adds their reward (nuts) to the player.
+     * Updates the enemy's image accordingly.
+     */
     private void updateHealthLabels() {
         nutriaHealthLabel.setText("Nutria HP: " + nutria.getHealth());
         Enemy currentEnemy = combat.getCurrentEnemy();
@@ -488,6 +543,11 @@ public class Game extends JFrame implements ActionListener {
         enemyImageLabel.setIcon(new ImageIcon(scaledImage));
     }
 
+    /**
+     * Updates the health labels for both the nutria and the boss enemy.
+     *
+     * Also checks if the boss has been defeated and adds their reward (nuts) to the player.
+     */
     private void updateHealthLabelsBoss() {
         nutriaHealthLabelBoss.setText("Nutria HP: " + nutria.getHealth());
         Enemy currentEnemy = combat.getCurrentEnemy();

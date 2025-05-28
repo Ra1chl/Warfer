@@ -5,59 +5,108 @@ import GameManager.ResourceType;
 
 public class MainNutria {
     private int health;
-    private int maxHealth;         // Nové pole pro maximální životy
+    private int maxHealth;
     private int attackPower;
-    private int maxAttackPower;    // Nové pole pro maximální útok
+    private int maxAttackPower;
     private int level;
-    private Inventory inventory;// Přidání inventáře
-
+    private Inventory inventory;
+    /**
+     * Constructor for MainNutria.
+     * Initializes the Nutria with maximum health and attack power,
+     * sets current health and attack power to their maximum values,
+     * initializes the level to 1 and creates a new inventory.
+     *
+     * @param maxHealth Maximum health of the Nutria.
+     * @param maxAttackPower Maximum attack power of the Nutria.
+     */
     public MainNutria(int maxHealth, int maxAttackPower) {
         this.maxHealth = maxHealth;
-        this.health = maxHealth; // aktuální zdraví je na max
+        this.health = maxHealth;
         this.maxAttackPower = maxAttackPower;
-        this.attackPower = maxAttackPower; // aktuální útok je na max
+        this.attackPower = maxAttackPower;
         this.level = 1;
-        this.inventory = new Inventory(); // Inicializace inventáře
+        this.inventory = new Inventory();
     }
 
-    // Metody pro manipulaci se surovinami
+    /**
+     * Adds the specified amount of a resource type to the Nutria's inventory.
+     *
+     * @param type The type of resource to add.
+     * @param amount The amount of resource to add.
+     */
     public void addResource(ResourceType type, int amount) {
         inventory.addResource(type, amount);
     }
-
+    /**
+     * Attempts to remove the specified amount of a resource type from the Nutria's inventory.
+     *
+     * @param type The type of resource to remove.
+     * @param amount The amount of resource to remove.
+     * @return true if removal was successful, false otherwise.
+     */
     public boolean removeResource(ResourceType type, int amount) {
         return inventory.removeResource(type, amount);
     }
-
+    /**
+     * Gets the current amount of the specified resource type in the inventory.
+     *
+     * @param type The resource type.
+     * @return The amount of the resource currently held.
+     */
     public int getResourceAmount(ResourceType type) {
         return inventory.getAmount(type);
     }
 
-    // Nové metody pro získání max hodnot
+    /**
+     * Returns the maximum health of the Nutria.
+     *
+     * @return Maximum health.
+     */
     public int getMaxHealth() {
         return maxHealth;
     }
-
+    /**
+     * Returns the maximum attack power of the Nutria.
+     *
+     * @return Maximum attack power.
+     */
     public int getMaxAttackPower() {
         return maxAttackPower;
     }
 
-    // Metody pro zvýšení max hodnot (pro upgrade)
+    /**
+     * Increases the maximum health by a given amount.
+     * Also sets current health to the new maximum.
+     *
+     * @param amount Amount to increase max health by.
+     */
     public void increaseMaxHealth(int amount) {
         this.maxHealth += amount;
-        this.health = this.maxHealth; // při upgrade se obnoví na max životy
+        this.health = this.maxHealth; // restore health to max after upgrade
     }
-
+    /**
+     * Increases the maximum attack power by a given amount.
+     * Also sets current attack power to the new maximum.
+     *
+     * @param amount Amount to increase max attack power by.
+     */
     public void increaseMaxAttackPower(int amount) {
         this.maxAttackPower += amount;
         this.attackPower = this.maxAttackPower; // při upgrade se obnoví na max útok
     }
-
-    // Metody pro aktuální životy a útok
+    /**
+     * Gets the current health.
+     *
+     * @return Current health.
+     */
     public int getHealth() {
         return health;
     }
-
+    /**
+     * Sets the current health, but caps it at maxHealth.
+     *
+     * @param health New health value.
+     */
     public void setHealth(int health) {
         if (health > maxHealth) {
             this.health = maxHealth;
@@ -65,11 +114,19 @@ public class MainNutria {
             this.health = health;
         }
     }
-
+    /**
+     * Gets the current attack power.
+     *
+     * @return Current attack power.
+     */
     public int getAttackPower() {
         return attackPower;
     }
-
+    /**
+     * Sets the current attack power, but caps it at maxAttackPower.
+     *
+     * @param attackPower New attack power value.
+     */
     public void setAttackPower(int attackPower) {
         if (attackPower > maxAttackPower) {
             this.attackPower = maxAttackPower;
@@ -78,20 +135,9 @@ public class MainNutria {
         }
     }
 
-    // Zbytek metod zůstává stejný (např. attack, receiveDamage, isAlive, atd.)
-
-    public void attack(Enemy enemy) {
-        enemy.takeDamage(attackPower);
-        System.out.println("Main Nutria attacks for " + attackPower + " damage!");
-    }
-
-    public void receiveDamage(int damage) {
-        health -= damage;
-        System.out.println("Main Nutria received " + damage + " damage. Remaining health: " + health);
-    }
 
     public void gainExperience(int xp) {
-        // pokud nechcete XP, můžete tento kód odstranit nebo ignorovat
+
     }
 
     public void takeDamage(int amount) {

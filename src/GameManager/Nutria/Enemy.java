@@ -17,35 +17,17 @@ public class Enemy {
         this.reward = reward;
         this.obrazek = obrazek;
     }
-
+    /**
+     * Reduces the Nutria's current health by the specified damage amount.
+     * If the resulting health is less than 0, it is set to 0.
+     *
+     * @param damage The amount of damage to apply.
+     */
     public void takeDamage(int damage) {
         health -= damage;
         if (health < 0) health = 0;
     }
 
-    public void reset() {
-        this.health = maxHealth;
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
-    public int getAttackPower() {
-        return attackPower;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getObrazek() {
-        return obrazek;
-    }
-
-    public int getReward() {
-        return reward;
-    }
 
     public void setType(String type) {
         this.type = type;
@@ -73,5 +55,29 @@ public class Enemy {
 
     public void setObrazek(String obrazek) {
         this.obrazek = obrazek;
+    }
+
+    public void reset() {
+        this.health = maxHealth;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public int getAttackPower() {
+        return attackPower;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getObrazek() {
+        return obrazek;
+    }
+
+    public int getReward() {
+        return reward;
     }
 }

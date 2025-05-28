@@ -16,7 +16,13 @@ public class WinScene extends JFrame implements ActionListener {
     private ImageIcon icon = new ImageIcon("Textures/icon.jpg");
     private MainNutria nutria;
 
-
+    /**
+     * Constructs a WinScene that is shown when the player wins.
+     * Initializes and displays the win window with a background, an exit button,
+     * and gives the player a resource bonus. The player's health is also restored.
+     *
+     * @param nutria the player's main unit to update resources and health
+     */
     public WinScene(MainNutria nutria) {
         this.nutria = nutria; // Uložení reference na nutria
 
@@ -52,7 +58,10 @@ public class WinScene extends JFrame implements ActionListener {
         rebirth();
     }
 
-
+    /**
+     * Restores the player's health to the maximum and rewards them
+     * with a fixed amount of resources (wood and chestnuts) after winning.
+     */
     private void rebirth() {
         nutria.setHealth(nutria.getMaxHealth()); // Obnovíme zdraví na maximum
         nutria.addResource(ResourceType.WOOD, 500); // Přidání 500 dřeva

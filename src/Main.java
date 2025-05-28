@@ -8,10 +8,7 @@ import GameManager.Nutria.*;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-
-Player player = new Player();
-new MainMenu(player);
-
+new MainMenu();
 
     }
 }

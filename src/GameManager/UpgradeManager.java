@@ -12,14 +12,13 @@ public class UpgradeManager {
         this.nutria = nutria;
     }
 
-    public int getUpgradeCostWood() {
-        return upgradeCostWood;
-    }
-
-    public int getUpgradeCostChestnut() {
-        return upgradeCostChestnut;
-    }
-
+    /**
+     * Upgrades the maximum health of the nutria if there are enough resources.
+     * Consumes a set amount of wood and chestnuts, increases max health,
+     * and raises the upgrade cost for the next upgrade.
+     *
+     * @return true if the upgrade was successful, false otherwise
+     */
     public boolean upgradeHealth() {
         if (nutria.getResourceAmount(ResourceType.WOOD) >= upgradeCostWood && nutria.getResourceAmount(ResourceType.NUT) >= upgradeCostChestnut) {
             nutria.removeResource(ResourceType.WOOD, upgradeCostWood);
@@ -32,9 +31,15 @@ public class UpgradeManager {
         return false;
     }
 
+    /**
+     * Upgrades the maximum attack power of the nutria if there are enough resources.
+     * Consumes a set amount of wood and chestnuts, increases attack power,
+     * and raises the upgrade cost for the next upgrade.
+     *
+     * @return true if the upgrade was successful, false otherwise
+     */
     public boolean upgradeAttack() {
-        if (nutria.getResourceAmount(ResourceType.WOOD) >= upgradeCostWood &&
-                nutria.getResourceAmount(ResourceType.NUT) >= upgradeCostChestnut) {
+        if (nutria.getResourceAmount(ResourceType.WOOD) >= upgradeCostWood && nutria.getResourceAmount(ResourceType.NUT) >= upgradeCostChestnut) {
             nutria.removeResource(ResourceType.WOOD, upgradeCostWood);
             nutria.removeResource(ResourceType.NUT, upgradeCostChestnut);
             nutria.increaseMaxAttackPower(5);
@@ -43,5 +48,14 @@ public class UpgradeManager {
             return true;
         }
         return false;
+    }
+
+
+    public int getUpgradeCostWood() {
+        return upgradeCostWood;
+    }
+
+    public int getUpgradeCostChestnut() {
+        return upgradeCostChestnut;
     }
 }
