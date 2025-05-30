@@ -25,4 +25,9 @@ public class Units {
     public void setBonus(int bonus) {
         this.bonus = bonus;
     }
+
+    public UnitType getType() {
+        return UnitType.valueOf(unitType.name());
+    }
+
 }

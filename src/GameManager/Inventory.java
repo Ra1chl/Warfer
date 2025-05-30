@@ -38,10 +38,11 @@ public class Inventory {
      * @return true if the resource was successfully removed, false otherwise.
      */
     public boolean removeResource(ResourceType type, Integer amount) {
+        if (resources.containsKey(type)) {
+
         int current = resources.get(type);
 
-        if (resources.containsKey(type)) {
-            if (current > amount) {
+            if (current >= amount) {
                 resources.put(type, current-amount);
                 return true;
             }
