@@ -29,7 +29,7 @@ public class CombatManager {
     public String playerAttack() {
         int damage = playerUnit.getAttackPower();
         currentEnemy.takeDamage(damage);
-        return "Nutrie zaútočila a dala " + damage + " dmg!";
+        return "The nutria attacked and dealt " + damage + " dmg!";
     }
     /**
      * Performs an attack from the current enemy to the player.
@@ -41,7 +41,7 @@ public class CombatManager {
         if (currentEnemy.getHealth() <= 0) return "";
         int damage = currentEnemy.getAttackPower();
         playerUnit.takeDamage(damage);
-        return "Nepřítel zaútočil a dal " + damage + " dmg!";
+        return "The enemy attacked and dealt " + damage + " dmg!";
     }
     /**
      * Checks if the battle with the current enemy is over.

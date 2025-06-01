@@ -1,8 +1,9 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="Warfer:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/Warfer_jar</output-path>
+    <output-path>$USER_HOME$/Desktop</output-path>
     <root id="archive" name="Warfer.jar">
       <element id="module-output" name="Warfer" />
+      <element id="library" level="module" name="JUnit5.8.1" module-name="Warfer" />
     </root>
   </artifact>
 </component>

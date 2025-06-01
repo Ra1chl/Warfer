@@ -53,7 +53,7 @@ public class Game extends JFrame implements ActionListener {
         this.setIconImage(icon.getImage());
 
         // Initialize the player's main unit (Nutria)
-        this.nutria = new MainNutria(100, 1000);
+        this.nutria = new MainNutria(100, 20);
 
         // Managers for units and upgrades
         this.unitsManager = new UnitsManager(nutria);
@@ -133,7 +133,6 @@ public class Game extends JFrame implements ActionListener {
         bossButton.setFocusPainted(false);
         hubPanel.add(bossButton);
 
-        // Štítky pro zobrazení surovin
         woodLabel = new JLabel("Dřevo: " + nutria.getResourceAmount(ResourceType.WOOD));
         woodLabel.setBounds(100, 50, 250, 30);
         hubPanel.add(woodLabel);
@@ -166,37 +165,34 @@ public class Game extends JFrame implements ActionListener {
         background.setBounds(0, 0, 1280, 720);
         upgradePanel.add(background);
 
-        // Štítky pro zobrazení aktuálních hodnot maxHealth a maxAttack
         JLabel currentMaxHealthLabel = new JLabel("" + nutria.getMaxHealth());
         currentMaxHealthLabel.setBounds(630, 652, 250, 30);
-        currentMaxHealthLabel.setFont(new Font("Arial", Font.BOLD, 24)); // Zvětšení textu
+        currentMaxHealthLabel.setFont(new Font("Arial", Font.BOLD, 24));
         upgradePanel.add(currentMaxHealthLabel);
 
         JLabel currentMaxAttackLabel = new JLabel("" + nutria.getMaxAttackPower());
         currentMaxAttackLabel.setBounds(630, 612, 250, 30);
-        currentMaxAttackLabel.setFont(new Font("Arial", Font.BOLD, 24)); // Změňte velikost podle potřeby // Zvětšení textu
+        currentMaxAttackLabel.setFont(new Font("Arial", Font.BOLD, 24));
         upgradePanel.add(currentMaxAttackLabel);
 
-        // Tlačítko pro upgrade max zdraví
+
         JButton upgradeHealthButton = new JButton("UPGRADE");
         upgradeHealthButton.setBounds(740, 460, 270, 50);
         upgradeHealthButton.addActionListener(e -> {
             if (upgradeManager.upgradeHealth()) {
                 currentMaxHealthLabel.setText("" + nutria.getMaxHealth());
-                // Aktualizujte i labely se surovinami podle potřeby
+
             } else {
                 JOptionPane.showMessageDialog(upgradePanel, "Nemáte dostatek surovin!");
             }
         });
         upgradePanel.add(upgradeHealthButton);
 
-        // Tlačítko pro upgrade max útoku
         JButton upgradeAttackButton = new JButton("UPGRADE");
         upgradeAttackButton.setBounds(285, 460, 270, 50);
         upgradeAttackButton.addActionListener(e -> {
             if (upgradeManager.upgradeAttack()) {
                 currentMaxAttackLabel.setText("" + nutria.getMaxAttackPower());
-                // Aktualizujte labely se surovinami podle potřeby
             } else {
                 JOptionPane.showMessageDialog(upgradePanel, "Nemáte dostatek surovin!");
             }
@@ -222,15 +218,14 @@ public class Game extends JFrame implements ActionListener {
     private JPanel createForestFrame() {
         JPanel forestPanel = new JPanel(null);
 
-        // Vytvoření tlačítka s obrázkem
         JButton treeClick = new JButton();
         treeClick.setBounds(402, 283, 475, 475);
         ImageIcon icon = new ImageIcon("Textures/tree.png");
         Image scaledImage = icon.getImage().getScaledInstance(475, 475, Image.SCALE_SMOOTH);
         treeClick.setIcon(new ImageIcon(scaledImage));
-        treeClick.setBorderPainted(true); // volitelné - odstraní obrys tlačítka
-        treeClick.setContentAreaFilled(false); // volitelné - odstraní výplň tlačítka
-        treeClick.setFocusPainted(false);// volitelné - odstraní rámeček při fokusu
+        treeClick.setBorderPainted(true);
+        treeClick.setContentAreaFilled(false);
+        treeClick.setFocusPainted(false);
 
         forestPanel.add(treeClick);
 
@@ -270,26 +265,26 @@ public class Game extends JFrame implements ActionListener {
         trainingPanel.add(background);
 
 
-        JButton buyMeleeButton = new JButton("Koupit Melee Unit (20 Kaštanů)");
+        JButton buyMeleeButton = new JButton("Purchase Melee Unit (20 Chestnuts)");
         buyMeleeButton.setBounds(285, 560, 300, 50);
         buyMeleeButton.addActionListener(e -> {
             if (unitsManager.buyMeleeUnit()) {
-                JOptionPane.showMessageDialog(this, "Melee jednotka koupena! +5 útoku");
+                JOptionPane.showMessageDialog(this, "Melee unit purchased! +5 attack");
                 updateResourceLabels();
             } else {
-                JOptionPane.showMessageDialog(this, "Nemáte dostatek Kaštanů!");
+                JOptionPane.showMessageDialog(this, "You don't have enough Chestnuts!");
             }
         });
         trainingPanel.add(buyMeleeButton);
 
-        JButton buyTankButton = new JButton("Koupit Tank Unit (20 Kaštanů)");
+        JButton buyTankButton = new JButton("Buy Tank Unit (20 Chestnuts)");
         buyTankButton.setBounds(710, 560, 300, 50);
         buyTankButton.addActionListener(e -> {
             if (unitsManager.buyTankUnit()) {
-                JOptionPane.showMessageDialog(this, "Tank jednotka koupena! +5 zdraví");
+                JOptionPane.showMessageDialog(this, "Tank unit purchased! +10 health");
                 updateResourceLabels();
             } else {
-                JOptionPane.showMessageDialog(this, "Nemáte dostatek Kaštanů!");
+                JOptionPane.showMessageDialog(this, "You don't have enough Chestnuts!");
             }
         });
         trainingPanel.add(buyTankButton);
@@ -325,7 +320,7 @@ public class Game extends JFrame implements ActionListener {
         enemyHealthLabel.setFont(new Font("Arial", Font.BOLD, 20));
         cavePanel.add(enemyHealthLabel);
 
-        attackButton = new JButton("Útočit");
+        attackButton = new JButton("Attack");
         attackButton.setBounds(20, 625, 200, 50);
         attackButton.setFocusable(false);
         cavePanel.add(attackButton);
@@ -350,7 +345,7 @@ public class Game extends JFrame implements ActionListener {
             String playerAction = combat.playerAttack();
             String enemyAction = combat.enemyAttack();
 
-            combatLog.append(playerAction + "\n");
+            combatLog.append(playerAction + "\n"); //https://www.loggly.com/ultimate-guide/java-logging-basics/
             if (!enemyAction.isEmpty()) {
                 combatLog.append(enemyAction + "\n");
             }
@@ -359,17 +354,17 @@ public class Game extends JFrame implements ActionListener {
 
             if (combat.isBattleOver()) {
                 if (combat.isPlayerDead()) {
-                    combatLog.append("Prohrál jsi!\n");
+                    combatLog.append("You lose!\n");
                     cardLayout.show(mainPanel, "hub");
                     System.out.println("lose");
 
                 } else {
                     if (combat.hasMoreEnemies()) {
                         combat.loadNextEnemy();
-                        combatLog.append("Nepřítel poražen! Přichází další...\n");
+                        combatLog.append("Enemy defeated! Another one is coming....\n");
                         updateHealthLabels();
                     } else {
-                        combatLog.append("Vyhrál jsi všechny souboje!\n");
+                        combatLog.append("You won all the battles!\n");
                         cardLayout.show(mainPanel, "hub");
                         System.out.println("win");
                         win = true;
@@ -409,7 +404,7 @@ public class Game extends JFrame implements ActionListener {
         enemyHealthLabelBoss.setBounds(890, 240, 200, 30);
         enemyHealthLabelBoss.setFont(new Font("Arial", Font.BOLD, 20));
         bossPanel.add(enemyHealthLabelBoss);
-        attackButtonBoss = new JButton("Útočit");
+        attackButtonBoss = new JButton("Attack");
         attackButtonBoss.setBounds(20, 625, 200, 50);
         attackButtonBoss.setFocusable(false);
         bossPanel.add(attackButtonBoss);
@@ -476,8 +471,8 @@ public class Game extends JFrame implements ActionListener {
      * Clears the combat log and updates health labels.
      */
     private void resetCombat() {
-        nutria.setHealth(nutria.getMaxHealth()); // Obnovíme zdraví na maximum
-        nutria.setAttackPower(nutria.getMaxAttackPower()); // Obnovíme útok na maximum
+        nutria.setHealth(nutria.getMaxHealth());
+        nutria.setAttackPower(nutria.getMaxAttackPower());
 
         enemyList.clear();
         enemyList.add(new Enemy("Ptacek", 15, 5, 50, "bird.png"));
@@ -506,7 +501,7 @@ public class Game extends JFrame implements ActionListener {
         nutria.setHealth(nutria.getMaxHealth());
         nutria.setAttackPower(nutria.getMaxAttackPower());
         enemyList.clear();
-        enemyList.add(new Enemy("Boss", 200, 35, 50, "")); // Boss jediný
+        enemyList.add(new Enemy("Boss", 200, 35, 50, ""));
         combat = new CombatManager(nutria, enemyList);
         combatLog.setText("");
         updateHealthLabelsBoss();
@@ -532,7 +527,6 @@ public class Game extends JFrame implements ActionListener {
         Enemy currentEnemy = combat.getCurrentEnemy();
         enemyHealthLabel.setText(currentEnemy.getType() + " HP: " + currentEnemy.getHealth());
 
-        // Přidání odměny po poražení nepřítele
         if (currentEnemy.getHealth() <= 0) {
             nutria.addResource(ResourceType.NUT, currentEnemy.getReward());
             updateResourceLabels();
@@ -553,7 +547,6 @@ public class Game extends JFrame implements ActionListener {
         Enemy currentEnemy = combat.getCurrentEnemy();
         enemyHealthLabelBoss.setText(currentEnemy.getType() + " HP: " + currentEnemy.getHealth());
 
-        // Přidání odměny po poražení nepřítele
         if (currentEnemy.getHealth() <= 0) {
             nutria.addResource(ResourceType.NUT, currentEnemy.getReward());
             updateResourceLabels();
@@ -580,7 +573,7 @@ public class Game extends JFrame implements ActionListener {
                 resetBossCombat();
                 cardLayout.show(mainPanel, "boss");
             } else {
-                JOptionPane.showMessageDialog(this, "Nejprve musite porazit nepratele v prvni jekzni");
+                JOptionPane.showMessageDialog(this, "First, you must defeat the enemy in the first cave!");
             }
 
         }
